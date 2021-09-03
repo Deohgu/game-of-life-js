@@ -1,9 +1,12 @@
 import styled from "styled-components";
 
-export const GridStyled = styled.div`
+export const GridContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
+  flex-direction: column;
   width: ${({ gridSize }) => gridSize}vh;
   height: ${({ gridSize }) => gridSize}vh;
+`;
+
+export const GridRow = styled.div`
+  display: flex;
 `;
