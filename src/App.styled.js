@@ -7,6 +7,7 @@ export const AppStyled = styled.div`
   align-items: center;
   width: 100vw;
   height: 100vh;
+  background-color: black;
 `;
 
 export const GlobalStyle = createGlobalStyle`
