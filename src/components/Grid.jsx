@@ -4,19 +4,19 @@ import { useSelector } from "react-redux";
 import { GridContainer, GridRow } from "./Grid.styled";
 import Cell from "./Cell";
 
-const Grid = ({ gridArr }) => {
-  const { gridSize, gridWidth, gridHeight } = useSelector(
-    (state) => state.settings
-  );
-
-  // console.log("gridArr:", gridArr);
+const Grid = ({ grid }) => {
+  const { gridSize } = useSelector((state) => state.settings);
 
   return (
     <GridContainer gridSize={gridSize}>
-      {gridArr.map((xCurr, xIndex) => (
+      {grid.map((xCurr, xIndex) => (
         <GridRow key={`Row - ${xIndex}`}>
           {xCurr.map((yCurr, yIndex) => (
-            <Cell isAlive={yCurr.isAlive} key={`Cell - ${xIndex} ${yIndex}`} />
+            <Cell
+              // onClick={}
+              isAlive={yCurr.isAlive}
+              key={`Cell - ${xIndex} ${yIndex}`}
+            />
           ))}
         </GridRow>
       ))}
