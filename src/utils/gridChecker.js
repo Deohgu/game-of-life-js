@@ -3,7 +3,27 @@ export default function gridChecker(grid, width, height) {
   // xoxxoxxoxxoxxx
   // xxxxxxxxxxxxxx
   // xxxxxxxxxxxxxx
-  // xxxxxxxxxxxxxx
+  // xoxxoxxxxxxxxx
+
+  const rules = (isCurrAlive, liveNeighbours) => {
+    if (isCurrAlive) {
+      switch (liveNeighbours) {
+        case liveNeighbours < 2 || liveNeighbours > 3:
+          console.log("dies");
+          break;
+        case liveNeighbours > 1 && liveNeighbours < 4:
+          console.log("lives");
+          break;
+        default:
+          console.log("no rules matched");
+          break;
+      }
+    } else {
+      if (liveNeighbours === 3) {
+        console.log("lives");
+      }
+    }
+  };
 
   const neighbours = ({ x, y }) => [
     grid[x][y - 1], // north
