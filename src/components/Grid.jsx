@@ -1,5 +1,6 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { updateGrid } from "../settingsSlice.js";
 
 import { GridContainer, GridRow } from "./Grid.styled";
 import Cell from "./Cell";
@@ -7,14 +8,22 @@ import Cell from "./Cell";
 const Grid = ({ grid }) => {
   const { gridSize } = useSelector((state) => state.settings);
 
+  const dispatch = useDispatch();
+
+  const cellClickHandler = (x, y) => {
+    const gridClone = JSON.parse(JSON.stringify(grid));
+    gridClone[y][x].isAlive = !gridClone[y][x].isAlive;
+    dispatch(updateGrid(gridClone));
+  };
+
   return (
     <GridContainer gridSize={gridSize}>
-      {grid.map((xCurr, xIndex) => (
-        <GridRow key={`Row - ${xIndex}`}>
-          {xCurr.map((yCurr, yIndex) => (
+      {grid.map((yCurr, yIndex) => (
+        <GridRow key={`Row - ${yIndex}`}>
+          {yCurr.map((xCurr, xIndex) => (
             <Cell
-              // onClick={}
-              isAlive={yCurr.isAlive}
+              cellClickHandler={() => cellClickHandler(xIndex, yIndex)}
+              isAlive={xCurr.isAlive}
               key={`Cell - ${xIndex} ${yIndex}`}
             />
           ))}
