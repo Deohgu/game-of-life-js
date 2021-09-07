@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { GridContainer, GridRow } from "./Grid.styled";
 import Cell from "./Cell";
 
+import gridChecker from "../utils/gridChecker";
+
 const Grid = () => {
   const { gridSize, gridWidth, gridHeight } = useSelector(
     (state) => state.settings
@@ -17,6 +19,8 @@ const Grid = () => {
       gridArr[i].push({ isAlive: Math.random() < 0.5 ? false : true });
     }
   }
+
+  gridChecker(gridArr, gridWidth, gridHeight);
 
   console.log("gridArr:", gridArr);
 
