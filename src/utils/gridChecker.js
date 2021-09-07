@@ -38,9 +38,9 @@ export default function gridChecker(grid, width, height) {
   //    Currently skips the edges.
   //    See minesweeper game for a wall filter
   //  Traverses grid every third cells
-  for (let y = 1; y < height - 2; y++) {
+  for (let y = 1; y < height - 1; y++) {
     // for (let y = 0; y < height - 1; y++) {
-    for (let x = 1; x < width - 2; x++) {
+    for (let x = 1; x < width - 1; x++) {
       // for (let x = 0; x < width - 1; x++) {
       //    Calls at each step calls funtion to cell surrounding 3x3 cells
       let currentAliveNeighbours = 0;

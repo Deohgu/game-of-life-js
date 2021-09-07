@@ -24,8 +24,8 @@ const App = () => {
   return (
     <AppStyled>
       <GlobalStyle />
-      <button onClick={clearGridHandler}>Clear Grid</button>
-      <button onClick={updateGridHandler}>Update Grid</button>
+      <button onClick={clearGridHandler}>CLEAR</button>
+      <button onClick={updateGridHandler}>UPDATE</button>
       <Grid grid={grid} />
     </AppStyled>
   );
