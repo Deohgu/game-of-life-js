@@ -14,16 +14,18 @@ const Grid = () => {
   for (let i = 0; i < gridWidth; i++) {
     gridArr.push([]);
     for (let j = 0; j < gridHeight; j++) {
-      gridArr[i].push(`X: ${j} Y: ${i}`);
+      gridArr[i].push({ isAlive: Math.random() < 0.5 ? false : true });
     }
   }
 
+  console.log("gridArr:", gridArr);
+
   return (
     <GridContainer gridSize={gridSize}>
-      {gridArr.map((xCurr) => (
-        <GridRow key={`${xCurr}`}>
-          {xCurr.map((yCurr) => (
-            <Cell key={`${yCurr}`} />
+      {gridArr.map((xCurr, xIndex) => (
+        <GridRow key={`Row - ${xIndex}`}>
+          {xCurr.map((yCurr, yIndex) => (
+            <Cell isAlive={yCurr.isAlive} key={`Cell - ${xIndex} ${yIndex}`} />
           ))}
         </GridRow>
       ))}
