@@ -4,25 +4,12 @@ import { useSelector } from "react-redux";
 import { GridContainer, GridRow } from "./Grid.styled";
 import Cell from "./Cell";
 
-import gridChecker from "../utils/gridChecker";
-
-const Grid = () => {
+const Grid = ({ gridArr }) => {
   const { gridSize, gridWidth, gridHeight } = useSelector(
     (state) => state.settings
   );
 
-  //  Replace this with a better method to create the grid
-  let gridArr = [];
-  for (let i = 0; i < gridWidth; i++) {
-    gridArr.push([]);
-    for (let j = 0; j < gridHeight; j++) {
-      gridArr[i].push({ isAlive: Math.random() < 0.5 ? false : true });
-    }
-  }
-
-  gridChecker(gridArr, gridWidth, gridHeight);
-
-  console.log("gridArr:", gridArr);
+  // console.log("gridArr:", gridArr);
 
   return (
     <GridContainer gridSize={gridSize}>
