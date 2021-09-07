@@ -6,7 +6,7 @@ import { GridContainer, GridRow } from "./Grid.styled";
 import Cell from "./Cell";
 
 const Grid = ({ grid }) => {
-  const { gridSize } = useSelector((state) => state.settings);
+  const { gridStyleSize } = useSelector((state) => state.settings);
 
   const dispatch = useDispatch();
 
@@ -17,7 +17,7 @@ const Grid = ({ grid }) => {
   };
 
   return (
-    <GridContainer gridSize={gridSize}>
+    <GridContainer gridStyleSize={gridStyleSize}>
       {grid.map((yCurr, yIndex) => (
         <GridRow key={`Row - ${yIndex}`}>
           {yCurr.map((xCurr, xIndex) => (

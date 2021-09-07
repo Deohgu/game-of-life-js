@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import gridGenerator from "./utils/gridGenerator";
 
 const initialState = {
-  gridSize: 80, // vh
+  gridStyleSize: 80, // vh
   gridWidth: 8,
   gridHeight: 8,
   get grid() {
