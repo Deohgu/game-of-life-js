@@ -1,4 +1,10 @@
-import { AppStyled, GlobalStyle } from "./App.styled";
+import {
+  AppStyled,
+  GameContainer,
+  ButtonContainer,
+  Button,
+  GlobalStyle,
+} from "./App.styled";
 import Grid from "./components/Grid";
 import { useSelector, useDispatch } from "react-redux";
 import { updateGrid } from "./settingsSlice.js";
@@ -17,24 +23,28 @@ const App = () => {
   return (
     <AppStyled>
       <GlobalStyle />
-      <button
-        onClick={() =>
-          dispatch(updateGrid(gridGenerator(gridWidth, gridHeight)))
-        }
-      >
-        RESET
-      </button>
-      <button onClick={() => dispatch(updateGrid(gridClear(grid)))}>
-        CLEAR
-      </button>
-      <button
-        onClick={() =>
-          dispatch(updateGrid(gridChecker(grid, gridWidth, gridHeight)))
-        }
-      >
-        UPDATE
-      </button>
-      <Grid grid={grid} />
+      <GameContainer>
+        <ButtonContainer>
+          <Button
+            onClick={() =>
+              dispatch(updateGrid(gridGenerator(gridWidth, gridHeight)))
+            }
+          >
+            RESET
+          </Button>
+          <Button onClick={() => dispatch(updateGrid(gridClear(grid)))}>
+            CLEAR
+          </Button>
+          <Button
+            onClick={() =>
+              dispatch(updateGrid(gridChecker(grid, gridWidth, gridHeight)))
+            }
+          >
+            UPDATE
+          </Button>
+        </ButtonContainer>
+        <Grid grid={grid} />
+      </GameContainer>
     </AppStyled>
   );
 };

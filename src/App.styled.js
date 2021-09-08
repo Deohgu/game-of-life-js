@@ -10,6 +10,26 @@ export const AppStyled = styled.div`
   background-color: black;
 `;
 
+export const GameContainer = styled.div`
+  display: flex;
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 150px;
+`;
+
+export const Button = styled.button`
+  width: 90px;
+  height: 90px;
+  background-color: hsl(0 0% 70%);
+  font-size: 15px;
+  font-weight: 600;
+`;
+
 export const GlobalStyle = createGlobalStyle`
   
   // Resetting margins, paddings, and borders
