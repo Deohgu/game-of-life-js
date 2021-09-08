@@ -4,8 +4,8 @@ import gridGenerator from "./utils/gridGenerator";
 
 const initialState = {
   gridStyleSize: 80, // vh
-  gridWidth: 8,
-  gridHeight: 8,
+  gridWidth: 12,
+  gridHeight: 12,
   get grid() {
     return gridGenerator(this.gridWidth, this.gridHeight);
   },

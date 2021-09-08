@@ -5,6 +5,7 @@ import { updateGrid } from "./settingsSlice.js";
 
 import gridClear from "./utils/gridClear";
 import gridChecker from "./utils/gridChecker";
+import gridGenerator from "./utils/gridGenerator";
 
 const App = () => {
   const { gridWidth, gridHeight, grid } = useSelector(
@@ -13,19 +14,26 @@ const App = () => {
 
   const dispatch = useDispatch();
 
-  const clearGridHandler = () => {
-    dispatch(updateGrid(gridClear(grid)));
-  };
-
-  const updateGridHandler = () => {
-    dispatch(updateGrid(gridChecker(grid, gridWidth, gridHeight)));
-  };
-
   return (
     <AppStyled>
       <GlobalStyle />
-      <button onClick={clearGridHandler}>CLEAR</button>
-      <button onClick={updateGridHandler}>UPDATE</button>
+      <button
+        onClick={() =>
+          dispatch(updateGrid(gridGenerator(gridWidth, gridHeight)))
+        }
+      >
+        RESET
+      </button>
+      <button onClick={() => dispatch(updateGrid(gridClear(grid)))}>
+        CLEAR
+      </button>
+      <button
+        onClick={() =>
+          dispatch(updateGrid(gridChecker(grid, gridWidth, gridHeight)))
+        }
+      >
+        UPDATE
+      </button>
       <Grid grid={grid} />
     </AppStyled>
   );
