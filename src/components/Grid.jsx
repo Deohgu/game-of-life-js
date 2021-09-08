@@ -5,8 +5,8 @@ import { updateGrid } from "../settingsSlice.js";
 import { GridContainer, GridRow } from "./Grid.styled";
 import Cell from "./Cell";
 
-const Grid = ({ grid }) => {
-  const { gridStyleSize } = useSelector((state) => state.settings);
+const Grid = () => {
+  const { gridStyleSize, grid } = useSelector((state) => state.settings);
 
   const dispatch = useDispatch();
 
