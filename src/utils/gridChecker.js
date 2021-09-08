@@ -44,39 +44,45 @@ export default function gridChecker(grid, width, height) {
       northWest,
     } = neighbours(x, y);
 
-    if (y === 0 && x !== width - 1 && x !== 0) {
-      // NORTH
+    const isNorth = y === 0,
+      isEast = x === width - 1,
+      isSouth = y === height - 1,
+      isWest = x === 0;
+
+    // NORTH
+    if (isNorth && !isEast && !isWest) {
       return [east, southEast, south, southWest, west];
     }
-    if (y === 0 && x === width - 1) {
-      // NORTH EAST
+    // NORTH EAST
+    if (isNorth && isEast) {
       return [south, southWest, west];
     }
-    if (x === width - 1 && y !== 0 && y !== height - 1) {
-      // EAST
+    // EAST
+    if (isEast && !isNorth && !isSouth) {
       return [north, south, southWest, west, northWest];
     }
-    if (y === height - 1 && x === width - 1) {
-      // SOUTH EAST
+    // SOUTH EAST
+    if (isSouth && isEast) {
       return [north, west, northWest];
     }
-    if (y === height - 1 && x !== width - 1 && x !== 0) {
-      // SOUTH
+    // SOUTH
+    if (isSouth && !isEast && !isWest) {
       return [north, northEast, east, west, northWest];
     }
-    if (y === height - 1 && x === 0) {
-      // SOUTH WEST
+    // SOUTH WEST
+    if (isSouth && isWest) {
       return [north, northEast, east];
     }
-    if (x === 0 && y !== 0 && y !== height - 1) {
-      // WEST
+    // WEST
+    if (isWest && !isNorth && !isSouth) {
       return [north, northEast, east, southEast, south];
     }
-    if (y === 0 && x === 0) {
-      // NORTH WEST
+    // NORTH WEST
+    if (isNorth && isWest) {
       return [east, southEast, south];
     }
 
+    // MIDDLE
     return [
       north,
       northEast,
