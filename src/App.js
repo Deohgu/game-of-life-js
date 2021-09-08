@@ -7,43 +7,50 @@ import {
 } from "./App.styled";
 import Grid from "./components/Grid";
 import { useSelector, useDispatch } from "react-redux";
-import { updateGrid } from "./settingsSlice.js";
+import { updateGrid, updateAliveLocations } from "./settingsSlice.js";
 
 import gridClear from "./utils/gridClear";
 import gridChecker from "./utils/gridChecker";
 import gridGenerator from "./utils/gridGenerator";
 
 const App = () => {
-  const { gridWidth, gridHeight, grid } = useSelector(
+  const { gridWidth, gridHeight, grid, aliveLocations } = useSelector(
     (state) => state.settings
   );
 
   const dispatch = useDispatch();
+
+  const updateHandler = () => {
+    const { newGrid, newAliveLocations } = gridChecker(
+      grid,
+      gridWidth,
+      gridHeight,
+      aliveLocations
+    );
+
+    dispatch(updateGrid(newGrid));
+    dispatch(updateAliveLocations(newAliveLocations));
+  };
+
+  const generatorHandler = () => {
+    const { newGrid, newAliveLocations } = gridGenerator(gridWidth, gridHeight);
+
+    dispatch(updateGrid(newGrid));
+    dispatch(updateAliveLocations(newAliveLocations));
+  };
 
   return (
     <AppStyled>
       <GlobalStyle />
       <GameContainer>
         <ButtonContainer>
-          <Button
-            onClick={() =>
-              dispatch(updateGrid(gridGenerator(gridWidth, gridHeight)))
-            }
-          >
-            RESET
-          </Button>
+          <Button onClick={generatorHandler}>RANDOM</Button>
           <Button onClick={() => dispatch(updateGrid(gridClear(grid)))}>
             CLEAR
           </Button>
-          <Button
-            onClick={() =>
-              dispatch(updateGrid(gridChecker(grid, gridWidth, gridHeight)))
-            }
-          >
-            UPDATE
-          </Button>
+          <Button onClick={updateHandler}>UPDATE</Button>
         </ButtonContainer>
-        <Grid grid={grid} />
+        <Grid />
       </GameContainer>
     </AppStyled>
   );

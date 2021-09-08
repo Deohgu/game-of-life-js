@@ -1,13 +1,26 @@
 //  Replace this with a better method to create the grid
-export default function generateGrid(gridWidth, gridHeight) {
+export default function generateGrid(gridWidth, gridHeight, type) {
   const grid = [];
+  const aliveLocations = [];
 
-  for (let i = 0; i < gridWidth; i++) {
+  const isAliveGenerator = (y, x) => {
+    if (Math.random() < 0.8) {
+      return grid[y].push({ isAlive: false });
+    }
+    aliveLocations.push({ y, x });
+    return grid[y].push({ isAlive: true });
+  };
+
+  for (let y = 0; y < gridWidth; y++) {
     grid.push([]);
-    for (let j = 0; j < gridHeight; j++) {
-      grid[i].push({ isAlive: Math.random() < 0.5 ? false : true });
+    for (let x = 0; x < gridHeight; x++) {
+      if (type === "empty") {
+        grid[y].push({ isAlive: false });
+      } else {
+        isAliveGenerator(y, x);
+      }
     }
   }
 
-  return grid;
+  return { newGrid: grid, newAliveLocations: aliveLocations };
 }

@@ -1,4 +1,4 @@
-export default function gridChecker(grid, width, height) {
+export default function gridChecker(grid, width, height, aliveLocations) {
   const gridClone = JSON.parse(JSON.stringify(grid));
 
   // xxxxxxxxxxxxxx
@@ -95,10 +95,10 @@ export default function gridChecker(grid, width, height) {
     ];
   };
 
-  // To traverse without checking the same twice check every three starting on index 1
-
   // FIXME:
-  //    Currently skips the edges.
+  //    Instead of running the grid, use recursion on a data structure with the live ones. Clusters of dead don’t need to be checked after all.
+
+  // To traverse without checking the same twice check every three starting on index 1
   //    See minesweeper game for a wall filter
   //  Traverses grid every third cells
   for (let y = 0; y < height; y++) {
@@ -119,5 +119,5 @@ export default function gridChecker(grid, width, height) {
     }
   }
 
-  return gridClone;
+  return { newGrid: gridClone };
 }
