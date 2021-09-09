@@ -6,7 +6,12 @@ const initialState = {
   gridStyleSize: 80, // vh
   gridWidth: 20,
   gridHeight: 20,
-  grid: 0,
+  // FIXME:
+  //  COnsider each cell keep count of alive neighbours
+  //  Then only iterate over those?
+  // https://www.youtube.com/watch?v=ndAfWKmKF34
+  //  Work already being done in gridGenerator
+  grid: [],
   aliveLocations: [],
 };
 

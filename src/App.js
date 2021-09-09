@@ -33,7 +33,12 @@ const App = () => {
   };
 
   const generatorHandler = () => {
-    const { newGrid, newAliveLocations } = gridGenerator(gridWidth, gridHeight);
+    const { newGrid, newAliveLocations } = gridGenerator(
+      gridWidth,
+      gridHeight,
+      "mixed",
+      grid
+    );
 
     dispatch(updateGrid(newGrid));
     dispatch(updateAliveLocations(newAliveLocations));
