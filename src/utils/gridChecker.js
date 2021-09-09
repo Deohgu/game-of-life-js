@@ -1,11 +1,7 @@
+import whichDirection from "./whichDirection";
+
 export default function gridChecker(grid, width, height, aliveLocations) {
   const gridClone = JSON.parse(JSON.stringify(grid));
-
-  // xxxxxxxxxxxxxx
-  // xoxxoxxoxxoxxx
-  // xxxxxxxxxxxxxx
-  // xxxxxxxxxxxxxx
-  // xoxxoxxxxxxxxx
 
   const rules = (isCurrAlive, liveNeighbours) => {
     if (isCurrAlive) {
@@ -21,80 +17,6 @@ export default function gridChecker(grid, width, height, aliveLocations) {
     }
   };
 
-  const neighbours = (x, y) => ({
-    north: () => grid[y - 1][x], // north
-    northEast: () => grid[y - 1][x + 1], // north east
-    east: () => grid[y][x + 1], // east
-    southEast: () => grid[y + 1][x + 1], // south east
-    south: () => grid[y + 1][x], // south
-    southWest: () => grid[y + 1][x - 1], // south west
-    west: () => grid[y][x - 1], // west
-    northWest: () => grid[y - 1][x - 1], // north west
-  });
-
-  const whichDirectionAmI = (x, y) => {
-    const {
-      north,
-      northEast,
-      east,
-      southEast,
-      south,
-      southWest,
-      west,
-      northWest,
-    } = neighbours(x, y);
-
-    const isNorth = y === 0,
-      isEast = x === width - 1,
-      isSouth = y === height - 1,
-      isWest = x === 0;
-
-    // NORTH
-    if (isNorth && !isEast && !isWest) {
-      return [east, southEast, south, southWest, west];
-    }
-    // NORTH EAST
-    if (isNorth && isEast) {
-      return [south, southWest, west];
-    }
-    // EAST
-    if (isEast && !isNorth && !isSouth) {
-      return [north, south, southWest, west, northWest];
-    }
-    // SOUTH EAST
-    if (isSouth && isEast) {
-      return [north, west, northWest];
-    }
-    // SOUTH
-    if (isSouth && !isEast && !isWest) {
-      return [north, northEast, east, west, northWest];
-    }
-    // SOUTH WEST
-    if (isSouth && isWest) {
-      return [north, northEast, east];
-    }
-    // WEST
-    if (isWest && !isNorth && !isSouth) {
-      return [north, northEast, east, southEast, south];
-    }
-    // NORTH WEST
-    if (isNorth && isWest) {
-      return [east, southEast, south];
-    }
-
-    // MIDDLE
-    return [
-      north,
-      northEast,
-      east,
-      southEast,
-      south,
-      southWest,
-      west,
-      northWest,
-    ];
-  };
-
   // FIXME:
   //    Instead of running the grid, use recursion on a data structure with the live ones. Clusters of dead don’t need to be checked after all.
 
@@ -106,7 +28,7 @@ export default function gridChecker(grid, width, height, aliveLocations) {
       //    Calls at each step calls funtion to cell surrounding 3x3 cells
       let currentAliveNeighbours = 0;
 
-      whichDirectionAmI(x, y).forEach((direction) => {
+      whichDirection(grid, width, height, x, y).forEach((direction) => {
         if (direction().isAlive) {
           currentAliveNeighbours++;
         }
