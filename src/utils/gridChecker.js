@@ -28,8 +28,8 @@ export default function gridChecker(grid, width, height, aliveLocations) {
       //    Calls at each step calls funtion to cell surrounding 3x3 cells
       let currentAliveNeighbours = 0;
 
-      whichDirection(grid, width, height, x, y).forEach((direction) => {
-        if (direction().isAlive) {
+      whichDirection(grid, width, height, x, y).forEach(({ y, x }) => {
+        if (grid[y][x].isAlive) {
           currentAliveNeighbours++;
         }
       });

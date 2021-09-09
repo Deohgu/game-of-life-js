@@ -1,12 +1,12 @@
 export default function whichDirection(grid, width, height, x, y) {
-  const north = () => grid[y - 1][x], // north
-    northEast = () => grid[y - 1][x + 1], // north east
-    east = () => grid[y][x + 1], // east
-    southEast = () => grid[y + 1][x + 1], // south east
-    south = () => grid[y + 1][x], // south
-    southWest = () => grid[y + 1][x - 1], // south west
-    west = () => grid[y][x - 1], // west
-    northWest = () => grid[y - 1][x - 1]; // north west
+  const north = { y: y - 1, x }, // north
+    northEast = { y: y - 1, x: x + 1 }, // north east
+    east = { y, x: x + 1 }, // east
+    southEast = { y: y + 1, x: x + 1 }, // south east
+    south = { y: y + 1, x }, // south
+    southWest = { y: y + 1, x: x - 1 }, // south west
+    west = { y, x: x - 1 }, // west
+    northWest = { y: y - 1, x: x - 1 }; // north west
 
   const isNorth = y === 0,
     isEast = x === width - 1,
