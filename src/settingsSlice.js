@@ -13,6 +13,7 @@ const initialState = {
   //  Work already being done in gridGenerator
   grid: [],
   aliveLocations: [],
+  hasLiveNeighbours: {},
 };
 
 initialState.grid = gridGenerator(
@@ -31,9 +32,13 @@ export const settingsSlice = createSlice({
     updateAliveLocations(state, action) {
       state.aliveLocations = action.payload;
     },
+    updateHasLiveNeighbours(state, action) {
+      state.hasLiveNeighbours = action.payload;
+    },
   },
 });
 
-export const { updateGrid, updateAliveLocations } = settingsSlice.actions;
+export const { updateGrid, updateAliveLocations, updateHasLiveNeighbours } =
+  settingsSlice.actions;
 
 export default settingsSlice.reducer;

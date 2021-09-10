@@ -7,7 +7,11 @@ import {
 } from "./App.styled";
 import Grid from "./components/Grid";
 import { useSelector, useDispatch } from "react-redux";
-import { updateGrid, updateAliveLocations } from "./settingsSlice.js";
+import {
+  updateGrid,
+  updateAliveLocations,
+  updateHasLiveNeighbours,
+} from "./settingsSlice.js";
 
 import gridClear from "./utils/gridClear";
 import gridChecker from "./utils/gridChecker";
@@ -33,7 +37,7 @@ const App = () => {
   };
 
   const generatorHandler = () => {
-    const { newGrid, newAliveLocations } = gridGenerator(
+    const { newGrid, newAliveLocations, hasLiveNeighbours } = gridGenerator(
       gridWidth,
       gridHeight,
       "mixed",
@@ -42,6 +46,7 @@ const App = () => {
 
     dispatch(updateGrid(newGrid));
     dispatch(updateAliveLocations(newAliveLocations));
+    dispatch(updateHasLiveNeighbours(hasLiveNeighbours));
   };
 
   return (

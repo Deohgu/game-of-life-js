@@ -4,6 +4,7 @@ import whichDirection from "./whichDirection";
 export default function generateGrid(gridWidth, gridHeight, type, grid = []) {
   const gridClone = JSON.parse(JSON.stringify(grid));
   const aliveLocations = [];
+  const hasLiveNeighbours = {};
 
   // FIXME:
   //  COnsider each cell keep count of alive neighbours
@@ -24,16 +25,20 @@ export default function generateGrid(gridWidth, gridHeight, type, grid = []) {
     //  Updates surrouding cells of the current cell with the number of its alive neighbouring cells
     whichDirection(gridClone, gridWidth, gridHeight, x, y).forEach(
       ({ y, x }) => {
-        let currentAliveNeighbours = 0;
+        let aliveNeighbours = 0;
 
         whichDirection(gridClone, gridWidth, gridHeight, x, y).forEach(
           ({ y, x }) => {
             if (gridClone[y][x].isAlive) {
-              currentAliveNeighbours++;
+              aliveNeighbours++;
             }
           }
         );
-        gridClone[y][x].aliveNeighbours = currentAliveNeighbours;
+
+        if (aliveNeighbours > 0) {
+          if (hasLiveNeighbours[y] === undefined) hasLiveNeighbours[y] = {};
+          hasLiveNeighbours[y][x] = aliveNeighbours;
+        }
       }
     );
   };
@@ -43,12 +48,16 @@ export default function generateGrid(gridWidth, gridHeight, type, grid = []) {
 
     for (let x = 0; x < gridHeight; x++) {
       if (type === "empty") {
-        gridClone[y].push({ isAlive: false, aliveNeighbours: 0 });
+        gridClone[y].push({ isAlive: false });
       } else {
         isAliveGenerator(y, x);
       }
     }
   }
 
-  return { newGrid: gridClone, newAliveLocations: aliveLocations };
+  return {
+    newGrid: gridClone,
+    newAliveLocations: aliveLocations,
+    hasLiveNeighbours,
+  };
 }
