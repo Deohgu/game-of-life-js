@@ -4,11 +4,11 @@ export default function gridChecker(grid, width, height, liveNeighbours) {
   const gridClone = JSON.parse(JSON.stringify(grid));
   const liveNeighboursClone = JSON.parse(JSON.stringify(liveNeighbours));
 
-  const updateNeighbours = (y, x, change) => {
+  const updateNeighbours = (y, x, changeType) => {
     whichDirection(width, height, y, x).forEach(({ y, x }) => {
-      if (change) {
+      if (changeType === "born") {
         liveNeighboursClone[y][x]++;
-      } else if (!change && liveNeighboursClone[y][x] > 0) {
+      } else if (liveNeighboursClone[y][x] > 0) {
         liveNeighboursClone[y][x]--;
       }
     });
@@ -17,12 +17,12 @@ export default function gridChecker(grid, width, height, liveNeighbours) {
   const ruleChecker = (isCurrAlive, liveNeighbours, y, x) => {
     if (isCurrAlive) {
       const isDead = liveNeighbours <= 1 || liveNeighbours >= 4;
-      if (isDead) updateNeighbours(y, x, false);
+      if (isDead) updateNeighbours(y, x, "dead");
       return !isDead;
     }
 
     const isBorn = liveNeighbours === 3;
-    if (isBorn) updateNeighbours(y, x, true);
+    if (isBorn) updateNeighbours(y, x, "born");
     return isBorn;
   };
 
