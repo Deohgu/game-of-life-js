@@ -10,11 +10,14 @@ const initialState = {
   liveNeighbours: {},
 };
 
-initialState.grid = gridGenerator(
+const { newGrid, liveNeighbours } = gridGenerator(
   initialState.gridWidth,
   initialState.gridHeight,
   "empty"
-).newGrid;
+);
+
+initialState.grid = newGrid;
+initialState.liveNeighbours = liveNeighbours;
 
 export const settingsSlice = createSlice({
   name: "settings",
