@@ -33,7 +33,8 @@ export default function gridChecker(grid, width, height, liveNeighbours) {
 
       gridClone[y][x].isAlive = ruleChecker(
         gridClone[y][x].isAlive,
-        liveNeighboursClone[y][x],
+        // liveNeighboursClone[y][x],
+        liveNeighbours[y][x],
         y,
         x
       );
