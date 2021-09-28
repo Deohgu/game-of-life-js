@@ -1,4 +1,4 @@
-export default function whichDirection(grid, width, height, x, y) {
+export default function whichDirection(width, height, y, x) {
   const north = { y: y - 1, x }, // north
     northEast = { y: y - 1, x: x + 1 }, // north east
     east = { y, x: x + 1 }, // east

@@ -1,45 +1,50 @@
 import whichDirection from "./whichDirection";
 
-export default function gridChecker(grid, width, height, aliveLocations) {
+export default function gridChecker(grid, width, height, liveNeighbours) {
   const gridClone = JSON.parse(JSON.stringify(grid));
+  const liveNeighboursClone = JSON.parse(JSON.stringify(liveNeighbours));
 
-  const rules = (isCurrAlive, liveNeighbours) => {
-    if (isCurrAlive) {
-      if (liveNeighbours < 2 || liveNeighbours > 3) {
-        return false;
-      } else if (liveNeighbours > 1 && liveNeighbours < 4) {
-        return true;
+  const updateNeighbours = (y, x, change) => {
+    whichDirection(width, height, y, x).forEach(({ y, x }) => {
+      if (change) {
+        liveNeighboursClone[y][x]++;
+      } else if (!change && liveNeighboursClone[y][x] > 0) {
+        liveNeighboursClone[y][x]--;
       }
-    } else {
-      if (liveNeighbours === 3) {
-        return true;
-      }
-    }
+    });
   };
 
-  // FIXME:
-  //    Instead of running the grid, use recursion on a data structure with the live ones. Clusters of dead don’t need to be checked after all.
-
-  // To traverse without checking the same twice check every three starting on index 1
-  //    See minesweeper game for a wall filter
-  //  Traverses grid every third cells
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      //    Calls at each step calls funtion to cell surrounding 3x3 cells
-      let currentAliveNeighbours = 0;
-
-      whichDirection(grid, width, height, x, y).forEach(({ y, x }) => {
-        if (grid[y][x].isAlive) {
-          currentAliveNeighbours++;
-        }
-      });
-
-      gridClone[y][x].isAlive = rules(
-        gridClone[y][x].isAlive,
-        currentAliveNeighbours
-      );
+  const ruleChecker = (isCurrAlive, liveNeighbours, y, x) => {
+    if (isCurrAlive) {
+      if (liveNeighbours <= 1 || liveNeighbours >= 4) {
+        updateNeighbours(y, x, false);
+        return false;
+      }
+      return true;
     }
-  }
+    if (liveNeighbours === 3) {
+      updateNeighbours(y, x, true);
+      return true;
+    }
+    return false;
+  };
 
-  return { newGrid: gridClone };
+  Object.keys(liveNeighbours).forEach((yKey) => {
+    const y = Number(yKey);
+    Object.keys(liveNeighbours[y]).forEach((xKey) => {
+      const x = Number(xKey);
+
+      gridClone[y][x].isAlive = ruleChecker(
+        gridClone[y][x].isAlive,
+        liveNeighboursClone[y][x],
+        y,
+        x
+      );
+    });
+  });
+
+  return {
+    newGrid: gridClone,
+    newliveNeighbours: liveNeighboursClone,
+  };
 }

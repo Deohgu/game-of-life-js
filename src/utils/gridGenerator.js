@@ -3,44 +3,45 @@ import whichDirection from "./whichDirection";
 //  Replace this with a better method to create the grid
 export default function generateGrid(gridWidth, gridHeight, type, grid = []) {
   const gridClone = JSON.parse(JSON.stringify(grid));
-  const aliveLocations = [];
-  const hasLiveNeighbours = {};
-
-  // FIXME:
-  //  COnsider each cell keep count of alive neighbours
-  //  Then only iterate over those?
-  //  https://www.youtube.com/watch?v=ndAfWKmKF34
+  const liveNeighbours = {};
 
   const isAliveGenerator = (y, x) => {
     if (Math.random() < 0.8) {
+      let ownAliveNeighbours = 0;
+      whichDirection(gridWidth, gridHeight, y, x).forEach(({ y, x }) => {
+        if (gridClone[y][x].isAlive) {
+          ownAliveNeighbours++;
+        }
+      });
+      if (liveNeighbours[y] === undefined) liveNeighbours[y] = {};
+      liveNeighbours[y][x] = ownAliveNeighbours;
+
       return (gridClone[y][x].isAlive = false);
     }
 
-    aliveLocations.push({ y, x });
     gridClone[y][x].isAlive = true;
 
-    // FIXME:
-    //  Also check for the current cell, not just the neighbours
+    //  Updates current and surrouding cells with the number of its alive neighbouring cells
+    let ownAliveNeighbours = 0;
+    whichDirection(gridWidth, gridHeight, y, x).forEach(({ y, x }) => {
+      let aliveNeighbours = 0;
 
-    //  Updates surrouding cells of the current cell with the number of its alive neighbouring cells
-    whichDirection(gridClone, gridWidth, gridHeight, x, y).forEach(
-      ({ y, x }) => {
-        let aliveNeighbours = 0;
-
-        whichDirection(gridClone, gridWidth, gridHeight, x, y).forEach(
-          ({ y, x }) => {
-            if (gridClone[y][x].isAlive) {
-              aliveNeighbours++;
-            }
-          }
-        );
-
-        if (aliveNeighbours > 0) {
-          if (hasLiveNeighbours[y] === undefined) hasLiveNeighbours[y] = {};
-          hasLiveNeighbours[y][x] = aliveNeighbours;
-        }
+      if (gridClone[y][x].isAlive) {
+        ownAliveNeighbours++;
       }
-    );
+
+      whichDirection(gridWidth, gridHeight, y, x).forEach(({ y, x }) => {
+        if (gridClone[y][x].isAlive) {
+          aliveNeighbours++;
+        }
+      });
+
+      if (liveNeighbours[y] === undefined) liveNeighbours[y] = {};
+      liveNeighbours[y][x] = aliveNeighbours;
+    });
+
+    if (liveNeighbours[y] === undefined) liveNeighbours[y] = {};
+    liveNeighbours[y][x] = ownAliveNeighbours;
   };
 
   for (let y = 0; y < gridWidth; y++) {
@@ -57,7 +58,6 @@ export default function generateGrid(gridWidth, gridHeight, type, grid = []) {
 
   return {
     newGrid: gridClone,
-    newAliveLocations: aliveLocations,
-    hasLiveNeighbours,
+    liveNeighbours,
   };
 }

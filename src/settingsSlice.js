@@ -6,14 +6,8 @@ const initialState = {
   gridStyleSize: 80, // vh
   gridWidth: 20,
   gridHeight: 20,
-  // FIXME:
-  //  COnsider each cell keep count of alive neighbours
-  //  Then only iterate over those?
-  // https://www.youtube.com/watch?v=ndAfWKmKF34
-  //  Work already being done in gridGenerator
   grid: [],
-  aliveLocations: [],
-  hasLiveNeighbours: {},
+  liveNeighbours: {},
 };
 
 initialState.grid = gridGenerator(
@@ -29,16 +23,12 @@ export const settingsSlice = createSlice({
     updateGrid(state, action) {
       state.grid = action.payload;
     },
-    updateAliveLocations(state, action) {
-      state.aliveLocations = action.payload;
-    },
-    updateHasLiveNeighbours(state, action) {
-      state.hasLiveNeighbours = action.payload;
+    updateliveNeighbours(state, action) {
+      state.liveNeighbours = action.payload;
     },
   },
 });
 
-export const { updateGrid, updateAliveLocations, updateHasLiveNeighbours } =
-  settingsSlice.actions;
+export const { updateGrid, updateliveNeighbours } = settingsSlice.actions;
 
 export default settingsSlice.reducer;
