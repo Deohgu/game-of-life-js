@@ -16,17 +16,14 @@ export default function gridChecker(grid, width, height, liveNeighbours) {
 
   const ruleChecker = (isCurrAlive, liveNeighbours, y, x) => {
     if (isCurrAlive) {
-      if (liveNeighbours <= 1 || liveNeighbours >= 4) {
-        updateNeighbours(y, x, false);
-        return false;
-      }
-      return true;
+      const isDead = liveNeighbours <= 1 || liveNeighbours >= 4;
+      if (isDead) updateNeighbours(y, x, isDead);
+      return !isDead;
     }
-    if (liveNeighbours === 3) {
-      updateNeighbours(y, x, true);
-      return true;
-    }
-    return false;
+
+    const isBorn = liveNeighbours === 3;
+    if (isBorn) updateNeighbours(y, x, isBorn);
+    return isBorn;
   };
 
   Object.keys(liveNeighbours).forEach((yKey) => {
