@@ -17,12 +17,12 @@ export default function gridChecker(grid, width, height, liveNeighbours) {
   const ruleChecker = (isCurrAlive, liveNeighbours, y, x) => {
     if (isCurrAlive) {
       const isDead = liveNeighbours <= 1 || liveNeighbours >= 4;
-      if (isDead) updateNeighbours(y, x, isDead);
+      if (isDead) updateNeighbours(y, x, false);
       return !isDead;
     }
 
     const isBorn = liveNeighbours === 3;
-    if (isBorn) updateNeighbours(y, x, isBorn);
+    if (isBorn) updateNeighbours(y, x, true);
     return isBorn;
   };
 
