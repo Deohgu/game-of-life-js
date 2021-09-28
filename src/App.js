@@ -13,6 +13,22 @@ import gridClear from "./utils/gridClear";
 import gridChecker from "./utils/gridChecker";
 import gridGenerator from "./utils/gridGenerator";
 
+const generatorHandler = (gridWidth, gridHeight, type, grid, dispatch) => {
+  const { newGrid, liveNeighbours } = gridGenerator(
+    gridWidth,
+    gridHeight,
+    type,
+    grid
+  );
+  dispatch(updateGrid(newGrid));
+  dispatch(updateliveNeighbours(liveNeighbours));
+};
+
+const clearHandler = (dispatch, grid) => {
+  dispatch(updateGrid(gridClear(grid)));
+  dispatch(updateliveNeighbours({}));
+};
+
 const updateHandler = (
   grid,
   gridWidth,
@@ -28,17 +44,6 @@ const updateHandler = (
   );
   dispatch(updateGrid(newGrid));
   dispatch(updateliveNeighbours(newliveNeighbours));
-};
-
-const generatorHandler = (gridWidth, gridHeight, type, grid, dispatch) => {
-  const { newGrid, liveNeighbours } = gridGenerator(
-    gridWidth,
-    gridHeight,
-    type,
-    grid
-  );
-  dispatch(updateGrid(newGrid));
-  dispatch(updateliveNeighbours(liveNeighbours));
 };
 
 const App = () => {
@@ -60,9 +65,7 @@ const App = () => {
           >
             RANDOM
           </Button>
-          <Button onClick={() => dispatch(updateGrid(gridClear(grid)))}>
-            CLEAR
-          </Button>
+          <Button onClick={() => clearHandler(dispatch, grid)}>CLEAR</Button>
           <Button
             onClick={() =>
               updateHandler(
