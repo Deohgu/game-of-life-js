@@ -13,8 +13,11 @@ export default function generateGrid(gridWidth, gridHeight, type, grid = []) {
           ownAliveNeighbours++;
         }
       });
-      liveNeighbours[y][x] = ownAliveNeighbours;
 
+      if (ownAliveNeighbours > 0) {
+        if (!liveNeighbours[y]) liveNeighbours[y] = {};
+        liveNeighbours[y][x] = ownAliveNeighbours;
+      }
       return (gridClone[y][x].isAlive = false);
     }
 
@@ -35,22 +38,23 @@ export default function generateGrid(gridWidth, gridHeight, type, grid = []) {
         }
       });
 
-      liveNeighbours[y][x] = aliveNeighbours;
+      if (aliveNeighbours > 0) {
+        if (!liveNeighbours[y]) liveNeighbours[y] = {};
+        liveNeighbours[y][x] = aliveNeighbours;
+      }
     });
 
+    // even if 0 neighbours itself is alive so will need to be re-checked
+    if (!liveNeighbours[y]) liveNeighbours[y] = {};
     liveNeighbours[y][x] = ownAliveNeighbours;
   };
 
   for (let y = 0; y < gridWidth; y++) {
-    if (type === "empty") {
-      gridClone.push([]);
-      liveNeighbours[y] = {};
-    }
+    if (type === "empty") gridClone.push([]);
 
     for (let x = 0; x < gridHeight; x++) {
       if (type === "empty") {
         gridClone[y].push({ isAlive: false });
-        liveNeighbours[y][x] = 0;
       } else {
         isAliveGenerator(y, x);
       }
