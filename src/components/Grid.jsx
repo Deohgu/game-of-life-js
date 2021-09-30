@@ -22,6 +22,7 @@ const Grid = () => {
     dispatch(
       updateliveNeighbours(
         updateNeighbours(
+          grid,
           liveNeighbours,
           gridWidth,
           gridHeight,
