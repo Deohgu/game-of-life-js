@@ -9,32 +9,46 @@ export default function updateNeighbours(
   height: number,
   y: number,
   x: number,
-  changeType: string
+  twoDimensional?: boolean
 ): { [key: number]: { [key: number]: number } } {
   const liveNeighboursClone: { [key: number]: { [key: number]: number } } =
     JSON.parse(JSON.stringify(liveNeighbours));
 
-  whichDirection(width, height, y, x).forEach(({ y, x }) => {
-    if (liveNeighboursClone[y] === undefined) liveNeighboursClone[y] = {};
-    if (liveNeighboursClone[y][x] === undefined) liveNeighboursClone[y][x] = 0;
+  const countsNeighbours = (y: number, x: number) => {
+    return whichDirection(width, height, y, x).reduce((adder, { y, x }) => {
+      return grid[y][x].isAlive ? adder + 1 : adder;
+    }, 0);
+  };
 
-    if (changeType === "born") {
-      liveNeighboursClone[y][x]++;
-    } else if (liveNeighboursClone[y][x] > 0) {
-      liveNeighboursClone[y][x]--;
+  const parentNeighbours: number = whichDirection(width, height, y, x).reduce(
+    (adder, { y, x }) => {
+      if (liveNeighboursClone[y] === undefined) liveNeighboursClone[y] = {};
+      if (liveNeighboursClone[y][x] === undefined)
+        liveNeighboursClone[y][x] = 0;
 
-      if (liveNeighboursClone[y][x] === 0 && !grid[y][x].isAlive) {
-        delete liveNeighboursClone[y][x];
+      if (twoDimensional) {
+        // Neighbours for each surrouding cell of parent
+        let childNeighbours: number = countsNeighbours(y, x);
+
+        if (childNeighbours > 0) {
+          if (!liveNeighboursClone[y]) liveNeighboursClone[y] = {};
+          liveNeighboursClone[y][x] = childNeighbours;
+        }
       }
-    }
-  });
 
-  if (changeType === "born") {
+      return grid[y][x].isAlive ? adder + 1 : adder;
+    },
+    0
+  );
+
+  if (grid[y][x].isAlive) {
     if (liveNeighboursClone[y] === undefined) liveNeighboursClone[y] = {};
-    if (liveNeighboursClone[y][x] === undefined) liveNeighboursClone[y][x] = 0;
+    liveNeighboursClone[y][x] = parentNeighbours;
   } else {
-    if (liveNeighboursClone[y][x] === 0) {
+    if (parentNeighbours === 0) {
       delete liveNeighboursClone[y][x];
+      if (!Object.keys(liveNeighboursClone[y]).length)
+        delete liveNeighboursClone[y];
     }
   }
 

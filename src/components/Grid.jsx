@@ -17,18 +17,16 @@ const Grid = () => {
     const gridClone = JSON.parse(JSON.stringify(grid));
     gridClone[y][x].isAlive = !gridClone[y][x].isAlive;
 
-    const changeType = gridClone[y][x].isAlive ? "born" : "dead";
-
     dispatch(
       updateliveNeighbours(
         updateNeighbours(
-          grid,
+          gridClone,
           liveNeighbours,
           gridWidth,
           gridHeight,
           y,
           x,
-          changeType
+          true
         )
       )
     );
