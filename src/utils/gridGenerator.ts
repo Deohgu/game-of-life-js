@@ -12,45 +12,45 @@ export default function generateGrid(
 } {
   const gridClone: { isAlive: boolean }[][] = JSON.parse(JSON.stringify(grid));
   const liveNeighbours: { [key: number]: { [key: number]: number } } = {};
+  const countsNeighbours = (y: number, x: number) => {
+    return whichDirection(gridWidth, gridHeight, y, x).reduce(
+      (adder, { y, x }) => {
+        return gridClone[y][x].isAlive ? adder + 1 : adder;
+      },
+      0
+    );
+  };
 
   const isAliveGenerator = (y: number, x: number): void => {
-    if (Math.random() < 0.8) {
+    if (!liveNeighbours[y]) liveNeighbours[y] = {};
+    const isCellDead = Math.random() < 0.8;
+
+    if (isCellDead) {
       gridClone[y][x].isAlive = false;
 
-      let ownAliveNeighbours = 0;
-      whichDirection(gridWidth, gridHeight, y, x).forEach(({ y, x }) => {
-        if (gridClone[y][x].isAlive) ownAliveNeighbours++;
-      });
+      let neighbours: number = countsNeighbours(y, x);
 
-      if (ownAliveNeighbours > 0) {
-        if (!liveNeighbours[y]) liveNeighbours[y] = {};
-        liveNeighbours[y][x] = ownAliveNeighbours;
+      if (neighbours > 0) {
+        liveNeighbours[y][x] = neighbours;
       }
     } else {
       gridClone[y][x].isAlive = true;
 
-      //  Updates current and surrouding cells with the number of its alive neighbouring cells
-      let ownAliveNeighbours = 0;
-      whichDirection(gridWidth, gridHeight, y, x).forEach(({ y, x }) => {
-        let aliveNeighbours = 0;
+      // even if 0 itself is alive so will need to be re-checked during update phase
+      liveNeighbours[y][x] = whichDirection(gridWidth, gridHeight, y, x).reduce(
+        (adder, { y, x }) => {
+          // Neighbours for each surrouding cell of parent
+          let childNeighbours: number = countsNeighbours(y, x);
 
-        if (gridClone[y][x].isAlive) ownAliveNeighbours++;
-
-        whichDirection(gridWidth, gridHeight, y, x).forEach(({ y, x }) => {
-          if (gridClone[y][x].isAlive) {
-            aliveNeighbours++;
+          if (childNeighbours > 0) {
+            if (!liveNeighbours[y]) liveNeighbours[y] = {};
+            liveNeighbours[y][x] = childNeighbours;
           }
-        });
 
-        if (aliveNeighbours > 0) {
-          if (!liveNeighbours[y]) liveNeighbours[y] = {};
-          liveNeighbours[y][x] = aliveNeighbours;
-        }
-      });
-
-      // even if 0 neighbours itself is alive so will need to be re-checked
-      if (!liveNeighbours[y]) liveNeighbours[y] = {};
-      liveNeighbours[y][x] = ownAliveNeighbours;
+          return gridClone[y][x].isAlive ? adder + 1 : adder;
+        },
+        0
+      );
     }
   };
 
