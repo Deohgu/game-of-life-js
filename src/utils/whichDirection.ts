@@ -1,4 +1,9 @@
-export default function whichDirection(width, height, y, x) {
+export default function whichDirection(
+  width: number,
+  height: number,
+  y: number,
+  x: number
+): { y: number; x: number }[] {
   const north = { y: y - 1, x }, // north
     northEast = { y: y - 1, x: x + 1 }, // north east
     east = { y, x: x + 1 }, // east
