@@ -1,16 +1,19 @@
 import whichDirection from "./whichDirection";
 
+//  [key: number] -> TypeScript Index Signatures
+
 export default function updateNeighbours(
-  grid,
-  liveNeighbours,
-  width,
-  height,
-  y,
-  x,
-  changeType
-) {
-  const liveNeighboursClone = JSON.parse(JSON.stringify(liveNeighbours));
-  // const ownAliveNeighbours = 0;
+  grid: { isAlive: boolean }[][],
+  liveNeighbours: { [key: number]: { [key: number]: number } },
+  width: number,
+  height: number,
+  y: number,
+  x: number,
+  changeType: string
+): { [key: number]: { [key: number]: number } } {
+  const liveNeighboursClone: { [key: number]: { [key: number]: number } } =
+    JSON.parse(JSON.stringify(liveNeighbours));
+
   whichDirection(width, height, y, x).forEach(({ y, x }) => {
     if (liveNeighboursClone[y] === undefined) liveNeighboursClone[y] = {};
     if (liveNeighboursClone[y][x] === undefined) liveNeighboursClone[y][x] = 0;

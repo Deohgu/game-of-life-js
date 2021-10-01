@@ -5,7 +5,7 @@ import { updateGrid, updateliveNeighbours } from "../settingsSlice.js";
 import { GridContainer, GridRow } from "./Grid.styled";
 import Cell from "./Cell";
 
-import updateNeighbours from "../utils/updateNeighbours.js";
+import updateNeighbours from "../utils/updateNeighbours.ts";
 
 const Grid = () => {
   const { gridWidth, gridHeight, gridStyleSize, grid, liveNeighbours } =
