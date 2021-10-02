@@ -7,13 +7,20 @@ import {
 } from "./App.styled";
 import Grid from "./components/Grid";
 import { useSelector, useDispatch } from "react-redux";
-import { updateGrid, updateliveNeighbours } from "./settingsSlice.js";
+import { selectSettings } from "./store";
+import { updateGrid, updateliveNeighbours } from "./settingsSlice";
 
 import gridClear from "./utils/gridClear";
 import gridChecker from "./utils/gridChecker";
 import gridGenerator from "./utils/gridGenerator";
 
-const generatorHandler = (gridWidth, gridHeight, type, grid, dispatch) => {
+const generatorHandler = (
+  gridWidth: number,
+  gridHeight: number,
+  type: string,
+  grid: { isAlive: boolean }[][] = [],
+  dispatch: (state: any) => void
+) => {
   const { newGrid, liveNeighbours } = gridGenerator(
     gridWidth,
     gridHeight,
@@ -24,17 +31,20 @@ const generatorHandler = (gridWidth, gridHeight, type, grid, dispatch) => {
   dispatch(updateliveNeighbours(liveNeighbours));
 };
 
-const clearHandler = (dispatch, grid) => {
+const clearHandler = (
+  dispatch: (state: any) => void,
+  grid: { isAlive: boolean }[][]
+) => {
   dispatch(updateGrid(gridClear(grid)));
   dispatch(updateliveNeighbours({}));
 };
 
 const updateHandler = (
-  grid,
-  gridWidth,
-  gridHeight,
-  liveNeighbours,
-  dispatch
+  grid: { isAlive: boolean }[][],
+  gridWidth: number,
+  gridHeight: number,
+  liveNeighbours: { [key: number]: { [key: number]: number } },
+  dispatch: (state: any) => void
 ) => {
   const { newGrid, newliveNeighbours } = gridChecker(
     grid,
@@ -47,9 +57,8 @@ const updateHandler = (
 };
 
 const App = () => {
-  const { gridWidth, gridHeight, grid, liveNeighbours } = useSelector(
-    (state) => state.settings
-  );
+  const { gridWidth, gridHeight, grid, liveNeighbours } =
+    useSelector(selectSettings);
 
   const dispatch = useDispatch();
 

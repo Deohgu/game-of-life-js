@@ -1,8 +1,16 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import gridGenerator from "./utils/gridGenerator";
 
-const initialState = {
+type settingsSliceState = {
+  gridStyleSize: number;
+  gridWidth: number;
+  gridHeight: number;
+  grid: { isAlive: boolean }[][];
+  liveNeighbours: { [key: number]: { [key: number]: number } };
+};
+
+const initialState: settingsSliceState = {
   gridStyleSize: 80, // vh
   gridWidth: 20,
   gridHeight: 20,
@@ -23,10 +31,13 @@ export const settingsSlice = createSlice({
   name: "settings",
   initialState,
   reducers: {
-    updateGrid(state, action) {
+    updateGrid(state, action: PayloadAction<{ isAlive: boolean }[][]>) {
       state.grid = action.payload;
     },
-    updateliveNeighbours(state, action) {
+    updateliveNeighbours(
+      state,
+      action: PayloadAction<{ [key: number]: { [key: number]: number } }>
+    ) {
       state.liveNeighbours = action.payload;
     },
   },

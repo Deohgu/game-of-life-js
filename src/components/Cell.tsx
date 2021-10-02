@@ -1,8 +1,11 @@
-import React from "react";
-
 import { CellStyled } from "./Cell.styled";
 
-const Cell = ({ isAlive, cellClickHandler }) => {
+type CellProps = {
+  isAlive: boolean;
+  cellClickHandler: () => void;
+};
+
+const Cell = ({ isAlive, cellClickHandler }: CellProps) => {
   return <CellStyled onClick={cellClickHandler} isAlive={isAlive} />;
 };
 

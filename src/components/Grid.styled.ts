@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export const GridContainer = styled.div`
+type GridContainerProps = {
+  gridStyleSize: number;
+};
+
+export const GridContainer = styled.div<GridContainerProps>`
   display: flex;
   flex-direction: column;
   width: ${({ gridStyleSize }) => gridStyleSize}vh;

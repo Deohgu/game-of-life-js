@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export const CellStyled = styled.div`
+type CellStyledProps = {
+  isAlive: boolean;
+};
+
+export const CellStyled = styled.div<CellStyledProps>`
   display: flex;
   flex: 1;
   margin: 1px;
