@@ -23,16 +23,18 @@ export default function updateNeighbours(
   const parentNeighbours: number = whichDirection(width, height, y, x).reduce(
     (adder, { y, x }) => {
       if (liveNeighboursClone[y] === undefined) liveNeighboursClone[y] = {};
-      if (liveNeighboursClone[y][x] === undefined)
-        liveNeighboursClone[y][x] = 0;
 
       if (twoDimensional) {
         // Neighbours for each surrouding cell of parent
         let childNeighbours: number = countsNeighbours(y, x);
 
-        if (childNeighbours > 0) {
+        if (childNeighbours > 0 || grid[y][x].isAlive) {
           if (!liveNeighboursClone[y]) liveNeighboursClone[y] = {};
           liveNeighboursClone[y][x] = childNeighbours;
+        } else {
+          delete liveNeighboursClone[y][x];
+          if (!Object.keys(liveNeighboursClone[y]).length)
+            delete liveNeighboursClone[y];
         }
       }
 
@@ -41,15 +43,13 @@ export default function updateNeighbours(
     0
   );
 
-  if (grid[y][x].isAlive) {
-    if (liveNeighboursClone[y] === undefined) liveNeighboursClone[y] = {};
+  if (liveNeighboursClone[y] === undefined) liveNeighboursClone[y] = {};
+  if (grid[y][x].isAlive || parentNeighbours) {
     liveNeighboursClone[y][x] = parentNeighbours;
-  } else {
-    if (parentNeighbours === 0) {
-      delete liveNeighboursClone[y][x];
-      if (!Object.keys(liveNeighboursClone[y]).length)
-        delete liveNeighboursClone[y];
-    }
+  } else if (liveNeighboursClone[y][x] !== undefined) {
+    delete liveNeighboursClone[y][x];
+    if (!Object.keys(liveNeighboursClone[y]).length)
+      delete liveNeighboursClone[y];
   }
 
   return liveNeighboursClone;
