@@ -20,27 +20,15 @@ export default function gridChecker(grid, width, height, liveNeighbours) {
       const x = Number(xKey);
 
       gridClone[y][x].isAlive = ruleChecker(gridClone[y][x].isAlive, y, x);
-      if (gridClone[y][x].isAlive) {
-        liveNeighboursClone = updateNeighbours(
-          gridClone,
-          liveNeighboursClone,
-          width,
-          height,
-          y,
-          x,
-          true
-        );
-      } else {
-        liveNeighboursClone = updateNeighbours(
-          gridClone,
-          liveNeighboursClone,
-          width,
-          height,
-          y,
-          x,
-          true
-        );
-      }
+      liveNeighboursClone = updateNeighbours(
+        gridClone,
+        liveNeighboursClone,
+        width,
+        height,
+        y,
+        x,
+        true
+      );
     });
   });
 
