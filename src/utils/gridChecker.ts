@@ -1,10 +1,16 @@
 import updateNeighbours from "./updateNeighbours";
 
-export default function gridChecker(grid, width, height, liveNeighbours) {
-  const gridClone = JSON.parse(JSON.stringify(grid));
-  let liveNeighboursClone = JSON.parse(JSON.stringify(liveNeighbours));
+export default function gridChecker(
+  grid: { isAlive: boolean }[][],
+  width: number,
+  height: number,
+  liveNeighbours: { [key: number]: { [key: number]: number } }
+) {
+  const gridClone: { isAlive: boolean }[][] = JSON.parse(JSON.stringify(grid));
+  let liveNeighboursClone: { [key: number]: { [key: number]: number } } =
+    JSON.parse(JSON.stringify(liveNeighbours));
 
-  const ruleChecker = (isCurrAlive, y, x) => {
+  const ruleChecker = (isCurrAlive: boolean, y: number, x: number) => {
     if (isCurrAlive) {
       const isDead = liveNeighbours[y][x] <= 1 || liveNeighbours[y][x] >= 4;
       return !isDead;
